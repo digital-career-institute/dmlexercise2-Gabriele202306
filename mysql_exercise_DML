@@ -1,0 +1,164 @@
+mysql> CREATE DATABASE exercise_DML;
+Query OK, 1 row affected (0.01 sec)
+
+
+mysql> USE exercise_DML;
+Database changed
+
+
+mysql> Create TABLE Albums (
+    -> album_id INT PRIMARY KEY,
+    -> title VARCHAR(50),
+    -> release_year INT,
+    -> price DECIMAL(10, 2),
+    -> stock_quantity INT
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE ARTISTS( artist_id INT PRIMARY KEY, artist_name VARCHAR(50), country VARCHAR(50));
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> Describe Albums;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| album_id       | int           | NO   | PRI | NULL    |       |
+| title          | varchar(50)   | YES  |     | NULL    |       |
+| release_year   | int           | YES  |     | NULL    |       |
+| price          | decimal(10,2) | YES  |     | NULL    |       |
+| stock_quantity | int           | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> Alter Table Albums ADD COLUMN genre Varchar(50);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> Describe Albums;
++----------------+---------------+------+-----+---------+-------+
+| Field          | Type          | Null | Key | Default | Extra |
++----------------+---------------+------+-----+---------+-------+
+| album_id       | int           | NO   | PRI | NULL    |       |
+| title          | varchar(50)   | YES  |     | NULL    |       |
+| release_year   | int           | YES  |     | NULL    |       |
+| price          | decimal(10,2) | YES  |     | NULL    |       |
+| stock_quantity | int           | YES  |     | NULL    |       |
+| genre          | varchar(50)   | YES  |     | NULL    |       |
++----------------+---------------+------+-----+---------+-------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO Albums(album_id, title, release_year, price, stock_quantity, genre) VALUES
+    -> (3, 'hiphop', 2023, 24.99, 2755, 'hiphop'),
+    -> (2, 'lalala', 2021, 29.99, 1755, 'pop'),
+    -> (1, 'blabla', 2001, 19.99, 1025, 'country');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> Describe Artists;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| artist_id   | int         | NO   | PRI | NULL    |       |
+| artist_name | varchar(50) | YES  |     | NULL    |       |
+| country     | varchar(50) | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO Artists(artist_id, artist_name, country) VALUES
+    -> (3, 'Franz', 'Germany'),
+    -> (1, 'Adil', 'Netherland'),
+    -> (2, 'Jana', 'US');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+
+mysql> SELECT title, release_year FROM Albums;
++--------+--------------+
+| title  | release_year |
++--------+--------------+
+| blabla |         2001 |
+| lalala |         2021 |
+| hiphop |         2023 |
++--------+--------------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT DISTINCT genre FROM Albums;
++---------+
+| genre   |
++---------+
+| country |
+| pop     |
+| hiphop  |
++---------+
+3 rows in set (0.00 sec)
+
+
+mysql> SELECT title FROM Albums WHERE release_year = 2022;
+Empty set (0.00 sec)
+
+mysql> SELECT title FROM Albums WHERE release_year = 2023;
++--------+
+| title  |
++--------+
+| hiphop |
++--------+
+1 row in set (0.00 sec)
+
+
+mysql> INSERT INTO Albums(album_id, title, release_year, price, stock_quantity) VALUES
+    -> (4,'Greatest Hits', 2023, 15.00, 50);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO Artists(artist_id, artist_name, country) VALUES
+    -> (4, 'NewArtist', 'Canada');
+Query OK, 1 row affected (0.01 sec)
+
+
+mysql> SELECT * FROM Albums;
++----------+---------------+--------------+-------+----------------+---------+
+| album_id | title         | release_year | price | stock_quantity | genre   |
++----------+---------------+--------------+-------+----------------+---------+
+|        1 | blabla        |         2001 | 19.99 |           1025 | country |
+|        2 | lalala        |         2021 | 29.99 |           1755 | pop     |
+|        3 | hiphop        |         2023 | 24.99 |           2755 | hiphop  |
+|        4 | Greatest Hits |         2023 | 15.00 |             50 | NULL    |
++----------+---------------+--------------+-------+----------------+---------+
+4 rows in set (0.00 sec)
+
+
+mysql> SELECT * FROM Artists;
++-----------+-------------+------------+
+| artist_id | artist_name | country    |
++-----------+-------------+------------+
+|         1 | Adil        | Netherland |
+|         2 | Jana        | US         |
+|         3 | Franz       | Germany    |
+|         4 | NewArtist   | Canada     |
++-----------+-------------+------------+
+4 rows in set (0.00 sec)
+
+
+mysql> UPDATE albums SET price = 20.00 WHERE Genre = 'Pop';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Albums SET stock_quantity = 10 WHERE title = 'Thriller';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+
+mysql> DELETE FROM Albums WHERE title = 'Dangerous';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELETE from Artists WHERE artist_name = 'Franz';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> Select * FROM Artists;
++-----------+-------------+------------+
+| artist_id | artist_name | country    |
++-----------+-------------+------------+
+|         1 | Adil        | Netherland |
+|         2 | Jana        | US         |
+|         4 | NewArtist   | Canada     |
++-----------+-------------+------------+
+3 rows in set (0.00 sec)
